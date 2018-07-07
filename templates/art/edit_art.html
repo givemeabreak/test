@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>编辑文章</title>
+</head>
+<body>
+
+  <h1>编辑文章页面</h1>
+ <hr>
+  {% if errors %}
+    <ul style="color: red; width: 30%">
+        {% for key,value in errors.items %}
+            <li style="border-bottom: 1px dashed red">{{ value }}</li>
+        {% endfor %}
+    </ul>
+  {% endif %}
+<form enctype="multipart/form-data" method="post" action="/art/art_edit">
+    {% csrf_token %}
+
+    <input type="text" name="title" placeholder="标题"> <br>
+    <input type="text" name="author" placeholder="作者"><br>
+    <textarea name="summary" rows="10" cols="30">#文章的概述</textarea><br>
+    <input type="file" name="artImg"> <br>
+    <select name="tag">
+        <option value="">--请选择类型--</option>
+        {% for tag in tags %}
+            <option value="{{ tag.id }}">{{ tag.title }}</option>
+        {% endfor %}
+
+    </select>
+    <button>提交</button>
+</form>
+
+</body>
+</html>

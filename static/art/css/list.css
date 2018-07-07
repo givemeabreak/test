@@ -1,0 +1,80 @@
+#tag_nav {
+    padding: 5px;
+    font-size: 20px;
+}
+
+#tag_nav a {
+    text-decoration: none;
+    cursor: pointer;
+    padding: 5px;
+    background-color: lightblue;
+    border: 1px solid blue;
+    border-radius: 5px;
+}
+
+#tag_nav .tag_all {
+    background-color: palevioletred;
+}
+
+#art_container {
+    list-style: none;
+}
+
+#art_container li {
+    float: left;
+    margin: 5px;
+}
+
+#art_container li img:hover {
+    box-shadow: 2px 2px 5px dodgerblue;
+    transform: scale3d(1.05, 1.05, 1.05);
+    transition: transform ease-in-out 1s;
+}
+
+#art_container li dd {
+    margin: 0px;
+    padding: 2px;
+}
+
+#art_container li label {
+    display: block;
+}
+
+#art_container:after {
+    content: '';
+    display: block;
+    height: 0;
+    overflow: hidden;
+    clear: both;
+}
+
+.pagination {
+    background-color: lightgoldenrodyellow;
+    padding: 5px;
+    text-align: center;
+    font-size: 1.2em;
+}
+
+.pagination a {
+    text-decoration: none;
+    padding: 5px 10px;
+    background-color: floralwhite;
+}
+
+.pagination a:hover {
+    background-color: dodgerblue;
+}
+
+.pagination .active {
+    background-color: palevioletred;
+}
+
+#searchKey {
+    padding: 10px;
+    font-size: 1.2em;
+    margin-left: 100px;
+}
+
+.navbar-brand > img {
+    display: inline-block;
+}

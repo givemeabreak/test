@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>分类列表页面</title>
+</head>
+<body>
+<h1>分类列表</h1>
+<table cellpadding="5" cellspacing="0" border="1" width="80%" style="margin: 0px auto">
+    <thead>
+        <th>序号</th>
+        <th>标题</th>
+        <th width="100">操作</th>
+    </thead>
+    <tbody >
+        {% for tag in tags %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ tag.title }}</td>
+                <td>
+                    <a href="/art/tags?id={{ tag.id }}">编辑</a>
+                    <a onclick="del('{{ tag.id }}','{{ tag.title }}')">删除</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    <tfoot>
+        <td>
+            <button onclick="add()">新增</button>
+        </td>
+        <td colspan="2" align="right">
+            &gt;&gt; 1 2 3 4  &lt;&lt;
+        </td>
+    </tfoot>
+</table>
+<script>
+    function del(id,title) {
+        if(confirm('是否要删除 '+title+"?")){
+            window.open('/art/delete_tag?id='+id);
+        }
+    }
+
+    function add() {
+         window.open('/art/tags');
+    }
+</script>
+</body>
+</html>

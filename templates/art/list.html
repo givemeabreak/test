@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'art/css/list.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div id="art">
+        <div id="tag_nav">
+            <b>标签分类:</b>
+            <a href="/art/" {% if tag_id == 0 %} class="tag_all" {% endif %}>所有</a>
+            {% for tag in tags %}
+                <a  {% if tag.id == tag_id %} class="tag_all" {% endif %}
+                                              href="/art/?tag={{ tag.id }}">{{ tag.title }}</a>
+            {% endfor %}
+        </div>
+
+        <ul id="art_container">
+            {% for art in arts %}
+
+                <li>
+                    <dl>
+                        <dt>
+                            <img src="/static/art_ups/{{ art.img }}"
+                                 width="200" height="240">
+                        </dt>
+                        <dd>
+                            <label>{{ art.title }}</label>
+                            <label>作者： {{ art.author }} </label>
+                            <label>分类: {{ art.tag.title }}</label>
+                        </dd>
+                        <dd>
+                           <a href="/art/show/?id={{ art.id }}" class="btn btn-info">开始阅读</a>
+                        </dd>
+                    </dl>
+                </li>
+
+            {% endfor %}
+        </ul>
+
+        <div class="pagination">
+            {% if page.has_previous %}
+                <a href="/art/?tag={{ tag_id }}&page={{ page.previous_page_number }}">上一页</a>
+            {% endif %}
+
+            {% for num in page_range %}
+                {% if num == page.number %}
+                    <a class="active" href="/art/?tag={{ tag_id }}&page={{ num }}">{{ num }}</a>
+                {% else %}
+                    <a href="/art/?tag={{ tag_id }}&page={{ num }}">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {% if page.has_next %}
+                <a href="/art/?tag={{ tag_id }}&page={{ page.next_page_number }}">下一页</a>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block js %}
+
+<script>
+    function search() {
+        var searchDOM = document.getElementById('searchKey')
+        if (searchDOM.value.trim().length == 0) {
+            alert('请输入搜索的内容');
+        } else {
+            // 获取当前页面的第一个form表单标签，并提交表单
+            document.forms[0].submit(); //打开form的action请求
+        }
+    }
+</script>
+
+{% endblock %}

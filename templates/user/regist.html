@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+
+    <div class="user container">
+        <h1>用户注册页面</h1>
+
+        {% if errors %}
+            <div style="color:red">
+                <ul>
+                    {% for _,msgs in errors.items %}
+                        <li>{{ msgs.0.message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        <form class="form-horizontal"
+              action="/user/regist"
+              method="post"
+              enctype="multipart/form-data">
+
+            {% csrf_token %}
+            <div class="form-group">
+                <label class="col-md-3">用户名</label>
+                <input class="form-control"
+                       name="username"
+                       placeholder="输入字母、数字组成的用户名">
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3">口令</label>
+                <input class="form-control"
+                       type="password"
+                       name="password"
+                       placeholder="输入用户登录的密码">
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3">确认口令</label>
+                <input class="form-control"
+                       type="password"
+                       name="password2"
+                       placeholder="确认密码">
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3">电话</label>
+                <input class="form-control"
+                       name="phone"
+                       placeholder="确认密码">
+            </div>
+
+            <div class="form-group">
+                <label class="col-xs-2 col-md-3">头像</label>
+
+                <img  class="img-circle"  id="preImg"
+                        src="{% static 'base/images/default.jpg' %}"
+                        width="120" height="120"
+                        onclick="uploadFile.click()">
+                <!-- ajax上传的图片后，返回的图片路径需要保存到用户表中 -->
+                <input type="hidden" name="photo" id="photo">
+            </div>
+
+
+
+            <div class="form-group">
+                <button class="btn btn-primary">注册</button>
+            </div>
+
+        </form>
+        <!-- onchange事件： 当文件选择时，回调的函数 -->
+        <input id="uploadFile"
+               type="file" style="display: none"
+                onchange="uploadImg(this.files[0])">
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        function uploadImg(uploadFile) {
+            alert('准备上传文件');
+            console.log(uploadFile);
+
+            //1. 创建xhr的ajax异步请求对象
+            var xhr = new XMLHttpRequest()
+
+            var formdata = new FormData()  //表单数据对象
+            //上传图片的字段名(参数名: photo)
+            formdata.append('photo', uploadFile)
+
+            //2. 打开连接
+            //open(method, url, is_async)
+            xhr.open('post', '/user/upload', true)
+
+            //3. 设置响应回调函数
+            xhr.onload = function (ev) {
+                // 判断请求是否成功
+                // 响应的数据是否可以读取
+                if (xhr.status == 200 && xhr.readyState == 4){
+                    alert('上传成功!');
+                    console.log(xhr.responseText);
+
+                    //将响应的json字符串转成json对象
+                    respData = JSON.parse(xhr.responseText)
+
+                    //显示上传之后的图片
+                    $('#preImg').attr('src', '/static/ups/'+respData.path);
+
+                    // 将上传成功后的图片路径（在服务器的路径）
+                    $('#photo').val(respData.path)
+                }
+            }
+
+            //4. 发送请求(开始上传图片)
+            xhr.send(formdata);
+        }
+    </script>
+{% endblock %}
